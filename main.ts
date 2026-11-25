@@ -14,4 +14,6 @@ function checked(text: string): string {
 const ENTRY = "Nothing changed, nobody is blocked, and the deadline is still Friday. That was the meeting; it is also the email nobody reads."
 const outDir = process.env.MAKEFUN_OUTPUT_DIR || "."
 mkdirSync(outDir, { recursive: true })
-writeFileSync(join(outDir, "entry.txt"), checked(ENTRY), "utf8")
+const payload = checked(ENTRY)
+if (payload.split(".").length < 2) throw new Error("entry needs its second sentence")
+writeFileSync(join(outDir, "entry.txt"), payload, "utf8")
