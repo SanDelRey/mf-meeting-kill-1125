@@ -14,5 +14,4 @@ function checked(text: string): string {
 const ENTRY = "Nothing changed, nobody is blocked, and the deadline is still Friday. That was the meeting; it is also the email nobody reads."
 const outDir = process.env.MAKEFUN_OUTPUT_DIR || "."
 mkdirSync(outDir, { recursive: true })
-const payload = checked(ENTRY)
-writeFileSync(join(outDir, "entry.txt"), payload, "utf8")
+writeFileSync(join(outDir, "entry.txt"), checked(ENTRY), "utf8")
