@@ -1,12 +1,18 @@
 import { mkdirSync, writeFileSync } from "node:fs"
 import { join } from "node:path"
 
-// The single sentence that could have replaced a pointless meeting.
-const line: string = "Nothing changed, nobody is blocked, and the deadline is still Friday. That was the meeting; it is also the email you didn't read."
-if (line.length < 1 || line.length > 200) throw new Error("entry must be 1..200 characters: " + line.length)
+const LIMIT = 200
 
-const outDir = process.env.MAKEFUN_OUTPUT_DIR ?? "."
+function checked(text: string): string {
+  const trimmed = text.trim()
+  if (trimmed.length === 0 || trimmed !== text || text.length > LIMIT) {
+    throw new RangeError("entry out of bounds: " + text.length)
+  }
+  return text
+}
+
+const ENTRY = "Nothing changed, nobody is blocked, and the deadline is still Friday. That was the meeting; it is also the email nobody reads."
+const outDir = process.env.MAKEFUN_OUTPUT_DIR || "."
 mkdirSync(outDir, { recursive: true })
-writeFileSync(join(outDir, "entry.txt"), line, "utf8")
-
-if (line.trim() !== line || line.trim().length === 0) throw new Error("entry must be non-empty with no surrounding whitespace")
+const payload = checked(ENTRY)
+writeFileSync(join(outDir, "entry.txt"), payload, "utf8")
